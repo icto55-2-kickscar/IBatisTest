@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="board">
+	
+	<typeAlias alias="BoardVo" type="com.sds.icto.vo.BoardVo" />
+	
+	<select id="search" resultClass="java.util.LinkedHashMap" parameterClass="java.util.Map">
+	
+		<![CDATA[
+		    select  a.no, a.title, a.reg_date, b.no, b.name, b.email 
+		     from  board a,
+		 	         member b
+		 	where a.member_no = b.no         
+		]]>
+		
+		<dynamic>
+			<isNotEmpty  property="name"  prepend="and" >
+				b.name like '%$name$%'
+			</isNotEmpty >
+			<isNotEmpty  property="title"  prepend="and" >
+				a.title like '%$title$%'
+			</isNotEmpty >
+			<isNotEmpty  property="content"  prepend="and" >
+				a.content like '%$content$%'
+			</isNotEmpty >
+		</dynamic>
+				 	         
+		<![CDATA[
+		order by  a.reg_date desc
+		]]>
+	</select>
+		
+	<select id="joinlist" resultClass="java.util.LinkedHashMap">
+		<![CDATA[
+		    select  a.no, a.title, a.reg_date, b.no, b.name, b.email 
+		     from  board a,
+		 	         member b
+		   where	 a.member_no = b.no
+		order by  a.reg_date desc
+		]]>
+	</select>
+	
+	<insert id="insert" parameterClass="BoardVo">
+		
+		<selectKey keyProperty="no" resultClass="java.lang.Long">
+			<![CDATA[
+			select board_no_seq.nextval as no from dual
+			]]>
+		</selectKey>
+   	
+		<![CDATA[
+		insert
+		  into board
+		values ( #no#, #title#, #content#, #memberNo#, #memberName#, 0, SYSDATE )
+		]]>
+		
+	</insert>
+		
+</sqlMap>

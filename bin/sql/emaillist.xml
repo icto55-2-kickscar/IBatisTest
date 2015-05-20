@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="emaillist">
+	<typeAlias alias="EmailListVo" type="com.sds.icto.vo.EmailListVo" />
+	
+	<resultMap class="EmailListVo" id="resultMapList">
+		<result column="no" property="no"/>
+		<result column="first_name" property="firstName"/>
+		<result column="last_name" property="lastName"/>
+		<result column="email" property="email"/>
+	</resultMap>
+
+
+	<delete id="deleteAll">
+		<![CDATA[
+		delete from email_list
+		]]>
+	</delete>
+	
+	<insert id="insert" parameterClass="EmailListVo">
+		<![CDATA[
+		insert
+		  into email_list
+		values ( email_list_no_seq.nextval, #firstName#, #lastName#, #email# )
+		]]>  
+	</insert>
+	
+	<select id="list" resultMap="resultMapList">
+		<![CDATA[
+		select no,
+			     first_name,
+			     last_name,
+			     email
+		  from email_list
+		]]>  
+	</select>
+	
+</sqlMap> 
