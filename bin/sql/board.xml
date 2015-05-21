@@ -4,8 +4,17 @@
 	
 	<typeAlias alias="BoardVo" type="com.sds.icto.vo.BoardVo" />
 	
-	<select id="search" resultClass="java.util.LinkedHashMap" parameterClass="java.util.Map">
+	<select id="joinlist" resultClass="java.util.LinkedHashMap">
+		<![CDATA[
+		    select  a.no, a.title, a.reg_date, b.no, b.name, b.email 
+		     from  board a,
+		 	         member b
+		   where	 a.member_no = b.no
+		order by  a.reg_date desc
+		]]>
+	</select>	
 	
+	<select id="search" resultClass="java.util.LinkedHashMap" parameterClass="java.util.Map">
 		<![CDATA[
 		    select  a.no, a.title, a.reg_date, b.no, b.name, b.email 
 		     from  board a,
@@ -24,21 +33,13 @@
 				a.content like '%$content$%'
 			</isNotEmpty >
 		</dynamic>
-				 	         
+		
 		<![CDATA[
 		order by  a.reg_date desc
 		]]>
 	</select>
 		
-	<select id="joinlist" resultClass="java.util.LinkedHashMap">
-		<![CDATA[
-		    select  a.no, a.title, a.reg_date, b.no, b.name, b.email 
-		     from  board a,
-		 	         member b
-		   where	 a.member_no = b.no
-		order by  a.reg_date desc
-		]]>
-	</select>
+
 	
 	<insert id="insert" parameterClass="BoardVo">
 		

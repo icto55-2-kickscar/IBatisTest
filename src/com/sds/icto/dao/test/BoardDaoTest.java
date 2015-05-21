@@ -8,18 +8,15 @@ import com.sds.icto.vo.BoardVo;
 
 public class BoardDaoTest {
 	private static BoardDao dao;
-	
-	public static void main(String[] args) {
-		before();
-		
-		insertTest();
-		getJoinListTest();
-		
-		searchTest();
-	}
-	
 	public static void before() {
 		dao = new BoardDao();
+	}
+	public static void main(String[] args) {
+		before();
+
+		getJoinListTest();
+//		insertTest();
+		searchTest();
 	}
 	
 	public static void insertTest() {
@@ -32,35 +29,31 @@ public class BoardDaoTest {
 		Long newNo = dao.insert( vo );
 		System.out.println( "새로 들어간 글의 번호(no) : " + newNo );
 	}
-	
+
 	public static void searchTest() {
-		
-		System.out.println( "============================검색" );
-		
-		List<LinkedHashMap> list = dao.getJoinList( "안", "다오", "잘" );
-		
+		System.out.println( "======================" );
+
+		List<LinkedHashMap> list = dao.getJoinList(
+		"안", "째", "");
 		for( LinkedHashMap map : list ) {
-			
-			for( Object value : map.values() ) {
-				System.out.print( value );
-				System.out.print( " : " );
+			for(  Object o : map.values() ) {
+				System.out.print( o );
+				System.out.print(  " : " );
 			}
-			
-			System.out.print( "\n" );
-		}
+			System.out.println( "\n" );
+		} 
 	}
 	
 	public static void getJoinListTest() {
 		List<LinkedHashMap> list = dao.getJoinList();
-		
 		for( LinkedHashMap map : list ) {
-			
-			for( Object value : map.values() ) {
-				System.out.print( value );
-				System.out.print( " : " );
+			for(  Object o : map.values() ) {
+				System.out.print( o );
+				System.out.print(  " : " );
 			}
+			System.out.println( "\n" );
 			
-			System.out.print( "\n" );
-		}
+		} 
+		
 	}
 }

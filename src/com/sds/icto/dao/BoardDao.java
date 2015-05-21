@@ -14,9 +14,7 @@ import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 import com.sds.icto.vo.BoardVo;
 
 public class BoardDao {
-	
 	private SqlMapClient sqlMapClient;
-	
 	public BoardDao() {
 		try {
 			Reader reader = Resources.getResourceAsReader( "SqlMapConfig.xml" );
@@ -24,6 +22,32 @@ public class BoardDao {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public List<LinkedHashMap> getJoinList(
+		String name, String title, String content ) {
+		Map map = new HashMap();
+		map.put( "name", name );
+		map.put( "title", title );
+		map.put( "content", content );
+		
+		List<LinkedHashMap> list = null;
+		try {
+		 list = sqlMapClient.queryForList( "board.search", map );
+		} catch( SQLException ex ) {
+			throw new RuntimeException( ex.getMessage() );
+		}
+		return list;
+	}
+	
+	public List<LinkedHashMap> getJoinList() {
+		List<LinkedHashMap> list = null;
+		try {
+		 list = sqlMapClient.queryForList( "board.joinlist" );
+		} catch( SQLException ex ) {
+			throw new RuntimeException( ex.getMessage() );
+		}
+		return list;
 	}
 	
 	public Long insert( BoardVo vo ) {
@@ -38,31 +62,5 @@ public class BoardDao {
 		return no;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<LinkedHashMap> getJoinList( String name, String title, String content ) {
-		List<LinkedHashMap> list = null;
-		try {
-			Map<String, String> mapKeyword = new HashMap();
-			mapKeyword.put( "name", name );
-			mapKeyword.put( "title", title );
-			mapKeyword.put( "content", content );
-			
-			list = sqlMapClient.queryForList( "board.search", mapKeyword );
-		} catch( SQLException ex ) {
-			throw new RuntimeException( ex.getMessage() );
-		}
-		return list;
-	}
-	
 
-	@SuppressWarnings("unchecked")
-	public List<LinkedHashMap> getJoinList() {
-		List<LinkedHashMap> list = null;
-		try {
-			list = sqlMapClient.queryForList( "board.joinlist" );
-		} catch( SQLException ex ) {
-			throw new RuntimeException( ex.getMessage() );
-		}
-		return list;
-	}
 }
